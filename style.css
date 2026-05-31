@@ -42,7 +42,7 @@ a {
 .app-header {
     position: fixed;
     top: 0;
-    left: 280px;
+    left: 0;
     right: 0;
     height: 56px;
     background: white;
@@ -66,7 +66,13 @@ a {
 }
 
 .header-controls {
-    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#mobileMenuBtn {
+    display: none;
 }
 
 .user-chip {
@@ -771,12 +777,17 @@ a {
     border: 1px solid var(--color-gray-200);
 }
 
-.app-sidebar.mobile-open .modal-close {
-    display: block !important;
+/* Responsive */
+@media (min-width: 1024px) {
+    .app-header {
+        left: 280px;
+    }
+    .app-sidebar {
+        display: flex;
+    }
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
     .app-header {
         left: 0;
     }
@@ -789,7 +800,7 @@ a {
         top: 56px;
         left: 0;
         width: 280px;
-        height: calc(100vh - 56px);
+        bottom: 0;
         z-index: 150;
     }
     .app-main {
@@ -801,6 +812,9 @@ a {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+    #mobileMenuBtn {
+        display: inline-flex !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -810,13 +824,8 @@ a {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    #mobileMenuBtn {
-        display: inline-flex !important;
-    }
 }
 
-@media (min-width: 769px) {
-    #mobileMenuBtn {
-        display: none !important;
-    }
+.app-sidebar.mobile-open .modal-close {
+    display: block !important;
 }
