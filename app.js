@@ -126,6 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     };
 
+    window.toggleMobileMenu = function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('mobile-open');
+    };
+
     window.submitSafeguardingReport = function() {
         const text = document.getElementById('safeguardingText').value.trim();
         if (!text) return alert("Please describe the concern.");
