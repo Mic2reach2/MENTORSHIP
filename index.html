@@ -16,6 +16,9 @@
                 <h1>Business Mentor</h1>
             </div>
             <div class="header-controls">
+                <button class="btn btn-login" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="user-chip" onclick="toggleUserMenu()">
                     <span class="user-avatar" id="headerAvatar">?</span>
                     <span id="headerName">Guest</span>
@@ -30,6 +33,7 @@
 
         <!-- Sidebar -->
         <aside class="app-sidebar" id="sidebar">
+            <button class="modal-close" onclick="toggleMobileMenu()" style="margin-bottom: 12px; display: none;"><i class="fa-solid fa-xmark"></i></button>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <span class="nav-label">Main</span>
