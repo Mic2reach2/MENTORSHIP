@@ -1,4 +1,4 @@
-﻿/* Business Mentor - Professional Business Mentorship Platform */
+/* Business Mentor - Professional Business Mentorship Platform */
 
 :root {
     --color-primary: #1e40af;
@@ -771,6 +771,10 @@ a {
     border: 1px solid var(--color-gray-200);
 }
 
+.app-sidebar.mobile-open .modal-close {
+    display: block !important;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .app-header {
@@ -778,6 +782,15 @@ a {
     }
     .app-sidebar {
         display: none;
+    }
+    .app-sidebar.mobile-open {
+        display: flex;
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 280px;
+        height: calc(100vh - 56px);
+        z-index: 150;
     }
     .app-main {
         margin-left: 0;
@@ -796,5 +809,14 @@ a {
     }
     .dashboard-grid {
         grid-template-columns: 1fr;
+    }
+    #mobileMenuBtn {
+        display: inline-flex !important;
+    }
+}
+
+@media (min-width: 769px) {
+    #mobileMenuBtn {
+        display: none !important;
     }
 }
