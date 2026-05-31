@@ -74,6 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
         document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
         document.getElementById(`panel-${tab}`).classList.add('active');
+        // Close mobile menu when switching tabs
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.remove('mobile-open');
     };
 
     window.switchRole = function(role) {
@@ -83,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('mm_currentUser', JSON.stringify(currentUser));
         }
         init();
+        // Close mobile menu when switching roles
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.remove('mobile-open');
     };
 
     window.openProfileModal = function() {
@@ -128,7 +134,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.toggleMobileMenu = function() {
         const sidebar = document.getElementById('sidebar');
+        const isOpen = sidebar.classList.contains('mobile-open');
         sidebar.classList.toggle('mobile-open');
+        // Close when clicking nav links
+        if (!isOpen) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('mobile-open');
+                }, { once: true });
+            });
+        }
     };
 
     window.submitSafeguardingReport = function() {
@@ -327,6 +342,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.selectConversation = function(name) {
         alert(`Switched to conversation with ${name}`);
+    };
+
+    window.switchConversation = function(name) {
+        document.querySelectorAll('.conv-item').forEach(item => {
+            item.style.background = item.getAttribute('data-conv') === name 
+                ? 'var(--color-primary)' 
+                : 'var(--color-gray-50)';
+            item.style.color = item.getAttribute('data-conv') === name ? 'white' : 'inherit';
+        });
+        alert(`Now chatting with ${name}`);
     };
 
     function renderAnalytics() {
