@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Mentor - Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="chat-wrapper">
+            <header class="chat-header" style="margin-bottom: 16px;">
+                <a href="index.html" class="btn btn-login">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Dashboard
+                </a>
+                <div style="text-align: center;">
+                    <h2 style="margin: 0; font-size: 20px;">Secure Messages</h2>
+                    <p class="card-text" style="margin: 4px 0 0;">Personal information is auto-redacted</p>
+                </div>
+            </header>
+
+            <div class="card chat-card">
+                <div class="chat-messages" id="chatBox">
+                    <div class="chat-empty">
+                        <i class="fa-solid fa-shield"></i>
+                        <p>Secure messaging active. Sensitive data will be redacted.</p>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Type a message...">
+                    <button class="btn btn-primary" id="sendChatBtn">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const chatInput = document.getElementById('chatInput');
+
+        document.getElementById('sendChatBtn').addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
+
+        // Sample demo messages
+        const demoMessages = [
+            { sender: 'Sarah Chen', text: 'Welcome to the program! Looking forward to working with you.' },
+            { sender: 'System', text: 'Session starts at 10:00 AM tomorrow. Please join on time.' },
+            { sender: 'Alex Johnson', text: 'Thank you for accepting my request. Ready to learn!' }
+        ];
+
+        // Load initial messages
+        demoMessages.forEach(msg => {
+            addMessage(msg.sender, msg.text, false);
+        });
+
+        function sendMessage() {
+            let text = chatInput.value.trim();
+            if (!text) return;
+
+            const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+            const phonePattern = /(\+?\d{1,4}?[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/;
+            const hasSensitive = emailPattern.test(text) || phonePattern.test(text);
+
+            if (hasSensitive) {
+                text = "[REDACTED FOR PRIVACY]";
+                alert("Sensitive information detected and redacted for privacy protection.");
+            }
+
+            addMessage('You', text, true);
+            chatInput.value = '';
+        }
+
+        function addMessage(sender, text, isSelf) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isSelf ? 'chat-message' : 'session-row';
+            msgDiv.style.cssText = isSelf ? 
+                'background:var(--color-primary);color:white;padding:10px 14px;border-radius:8px;margin-bottom:10px;margin-left:auto;max-width:80%;' :
+                'background:var(--color-gray-100);padding:10px 14px;border-radius:8px;margin-bottom:10px;max-width:80%;';
+            msgDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>

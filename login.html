@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Mentor - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="brand">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Business Mentor</span>
+                </div>
+                <h1>Sign In</h1>
+                <p class="auth-subtext">Access your professional mentorship dashboard</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="userName">Full Name</label>
+                    <input id="userName" type="text" placeholder="Alex Johnson" value="Alex Johnson" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input id="userPassword" type="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role</label>
+                    <select id="userRole">
+                        <option value="mentee">Mentee</option>
+                        <option value="mentor">Mentor</option>
+                        <option value="admin">Admin</option>
+                        <option value="wellbeing">Wellbeing</option>
+                        <option value="supervisor">Supervisor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Login to Dashboard
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <a href="index.html" class="btn btn-login">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const storedUser = JSON.parse(localStorage.getItem('mm_currentUser') || 'null');
+        if (storedUser) {
+            document.getElementById('userName').value = storedUser.name || 'Alex Johnson';
+            document.getElementById('userRole').value = storedUser.role || 'mentee';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('userName').value.trim();
+            const password = document.getElementById('userPassword').value;
+            const role = document.getElementById('userRole').value;
+            
+            if (!name) return alert('Please enter your name.');
+            if (!password) return alert('Please enter your password.');
+            
+            // Check registrations for password verification
+            const registrations = JSON.parse(localStorage.getItem('mm_registrations') || '[]');
+            const regUser = registrations.find(r => r.name === name && r.role === role);
+            if (regUser && regUser.password !== password) {
+                return alert('Invalid password.');
+            }
+            
+            const user = { 
+                name, 
+                role,
+                email: role === 'mentee' ? 'alex.johnson@company.com' : 'sarah.chen@mentor.com',
+                industry: 'Technology',
+                level: role === 'mentee' ? 'Entry' : 'Senior',
+                mentor: role === 'mentee' ? 'Sarah Chen' : null
+            };
+            localStorage.setItem('mm_currentUser', JSON.stringify(user));
+            alert(`Welcome, ${name}! Logged in as ${role}.`);
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

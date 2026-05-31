@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Mentor - Professional Mentorship Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <i class="fa-solid fa-briefcase"></i>
+                <h1>Business Mentor</h1>
+            </div>
+            <div class="header-controls">
+                <div class="user-chip" onclick="toggleUserMenu()">
+                    <span class="user-avatar" id="headerAvatar">?</span>
+                    <span id="headerName">Guest</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="user-menu" id="userMenu">
+                    <a href="#" onclick="openProfileModal()"><i class="fa-solid fa-user-gear"></i> Profile Settings</a>
+                    <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Switch User</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="app-sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-label">Main</span>
+                    <a class="nav-link active" data-tab="overview" onclick="switchTab('overview')">
+                        <i class="fa-solid fa-home"></i><span>Dashboard</span>
+                    </a>
+                    <a class="nav-link" data-tab="sessions" onclick="switchTab('sessions')">
+                        <i class="fa-solid fa-calendar-days"></i><span>Sessions</span>
+                    </a>
+                    <a class="nav-link" data-tab="chat" onclick="switchTab('chat')">
+                        <i class="fa-solid fa-comments"></i><span>Messages</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-label">Development</span>
+                    <a class="nav-link" data-tab="goals" onclick="switchTab('goals')">
+                        <i class="fa-solid fa-bullseye"></i><span>Goals</span>
+                    </a>
+                    <a class="nav-link" data-tab="resources" onclick="switchTab('resources')">
+                        <i class="fa-solid fa-book"></i><span>Resources</span>
+                    </a>
+                    <a class="nav-link" data-tab="certificates" onclick="switchTab('certificates')">
+                        <i class="fa-solid fa-certificate"></i><span>Certificates</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-label">Platform</span>
+                    <a class="nav-link" data-tab="analytics" onclick="switchTab('analytics')">
+                        <i class="fa-solid fa-chart-line"></i><span>Analytics</span>
+                    </a>
+                    <a class="nav-link" data-tab="recordings" onclick="switchTab('recordings')">
+                        <i class="fa-solid fa-microphone"></i><span>Recordings</span>
+                    </a>
+                    <a class="nav-link" data-tab="users" onclick="switchTab('users')">
+                        <i class="fa-solid fa-users"></i><span>Users</span>
+                    </a>
+                    <a class="nav-link" data-tab="safeguarding" onclick="switchTab('safeguarding')">
+                        <i class="fa-solid fa-shield"></i><span>Safeguarding</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <select class="role-switcher" id="roleSwitcher" onchange="switchRole(this.value)">
+                    <option value="mentee">Mentee</option>
+                    <option value="mentor">Mentor</option>
+                    <option value="admin">Admin</option>
+                    <option value="wellbeing">Wellbeing</option>
+                    <option value="supervisor">Supervisor</option>
+                </select>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="main-header">
+                <h2 id="pageTitle">Mentee Dashboard</h2>
+                <p id="pageDesc">Manage your professional development journey.</p>
+            </div>
+
+            <!-- Overview Panel -->
+            <section id="panel-overview" class="tab-panel active">
+                <div class="dashboard-grid" id="overviewGrid"></div>
+            </section>
+
+            <!-- Sessions Panel -->
+            <section id="panel-sessions" class="tab-panel">
+                <div class="content-card">
+                    <h3 class="card-title"><i class="fa-solid fa-calendar-days"></i> Session Management</h3>
+                    <p class="card-text">Manage your mentoring sessions and availability.</p>
+                    <div id="sessionActions" class="actions-area" style="margin-bottom: 16px; display: flex; gap: 12px;">
+                        <button class="btn btn-primary btn-sm" onclick="openNewSessionModal()"><i class="fa-solid fa-plus"></i> New Session</button>
+                        <button class="btn btn-secondary btn-sm" onclick="alert('Syncing calendar...')"><i class="fa-solid fa-sync"></i> Sync Calendar</button>
+                    </div>
+                    
+                    <table class="session-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--color-gray-200);">
+                                <th style="text-align: left; padding: 8px;">Session</th>
+                                <th style="text-align: left; padding: 8px;">Type</th>
+                                <th style="text-align: left; padding: 8px;">Date/Time</th>
+                                <th style="text-align: left; padding: 8px;">Status</th>
+                                <th style="text-align: center; padding: 8px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionsList"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Chat Panel -->
+            <section id="panel-chat" class="tab-panel">
+                <div class="content-card chat-card">
+                    <div class="chat-header" style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                        <h3 class="card-title" style="margin: 0;"><i class="fa-solid fa-comments"></i> Secure Messages</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openGroupChat()"><i class="fa-solid fa-users"></i> New Group Chat</button>
+                    </div>
+                    <div class="chat-conversations" style="display: flex; gap: 12px; margin-bottom: 16px;">
+                        <div class="content-card" style="flex: 1; max-width: 200px; padding: 12px; cursor: pointer;" onclick="selectConversation('Sarah Chen')">
+                            <strong>Sarah Chen</strong>
+                            <span class="badge badge-success" style="font-size: 10px;">Mentor</span>
+                        </div>
+                        <div class="content-card" style="flex: 1; max-width: 200px; padding: 12px; cursor: pointer;" onclick="selectConversation('Alex Morgan')">
+                            <strong>Alex Morgan</strong>
+                            <span class="badge badge-warning" style="font-size: 10px;">Mentee</span>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chatBox">
+                        <div class="chat-empty">
+                            <i class="fa-solid fa-shield"></i>
+                            <p>Secure messaging enabled. External contacts are automatically redacted.</p>
+                        </div>
+                    </div>
+                    <div class="chat-compose">
+                        <input type="text" id="chatInput" placeholder="Type a message...">
+                        <button class="btn btn-primary" id="sendChatBtn"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goals Panel -->
+            <section id="panel-goals" class="tab-panel">
+                <div class="dashboard-grid">
+                    <div class="content-card">
+                        <h3 class="card-title"><i class="fa-solid fa-bullseye"></i> Goal Setting</h3>
+                        <div id="goalInterface">
+                            <div class="form-group">
+                                <input type="text" id="newGoal" placeholder="Add a new goal...">
+                                <button class="btn btn-primary btn-sm" onclick="addGoal()">Add Goal</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-line"></i> Progress Tracking</h3>
+                        <div id="performanceInterface">
+                            <div class="progress-bar" style="margin-bottom: 12px;">
+                                <div class="progress-fill" style="width: 68%"></div>
+                            </div>
+                            <span>Overall Completion: <strong>68%</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Panel -->
+            <section id="panel-resources" class="tab-panel">
+                <div class="content-card">
+                    <h3 class="card-title"><i class="fa-solid fa-book"></i> Learning Resources</h3>
+                    <div id="resourceActions" style="margin-bottom: 16px; display: flex; gap: 12px;">
+                        <button class="btn btn-primary btn-sm" onclick="uploadResource()"><i class="fa-solid fa-upload"></i> Upload Resource</button>
+                        <input type="file" id="resourceFile" accept=".pdf,.doc,.docx,.txt" style="display: none;" onchange="handleResourceUpload(event)">
+                    </div>
+                    <div class="list-container" id="resourcesList"></div>
+                </div>
+            </section>
+
+            <!-- Certificates Panel -->
+            <section id="panel-certificates" class="tab-panel">
+                <div class="content-card">
+                    <h3 class="card-title"><i class="fa-solid fa-certificate"></i> Certificate Management</h3>
+                    <div id="certActions" style="margin-bottom: 16px; display: flex; gap: 12px;">
+                        <button class="btn btn-primary btn-sm" onclick="generateCertificate()"><i class="fa-solid fa-plus"></i> Generate Certificate</button>
+                    </div>
+                    <div class="list-container" id="certificatesList"></div>
+                </div>
+            </section>
+
+            <!-- Recordings Panel -->
+            <section id="panel-recordings" class="tab-panel">
+                <div class="content-card">
+                    <h3 class="card-title"><i class="fa-solid fa-microphone"></i> Audio Recordings</h3>
+                    <div class="list-container" id="recordingsList"></div>
+                </div>
+            </section>
+
+            <!-- Analytics Panel -->
+            <section id="panel-analytics" class="tab-panel">
+                <div class="dashboard-grid" id="analyticsGrid">
+                    <div class="content-card">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-pie"></i> Performance Overview</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item"><strong>89%</strong><span>Completion</span></div>
+                            <div class="stat-item"><strong>42</strong><span>Sessions</span></div>
+                            <div class="stat-item"><strong>12</strong><span>Hours</span></div>
+                            <div class="stat-item"><strong>3</strong><span>Goals</span></div>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-column"></i> Session Analytics</h3>
+                        <div class="chart-area" id="sessionChart"></div>
+                        <button class="btn btn-primary btn-block" onclick="alert('Exporting report...')">
+                            <i class="fa-solid fa-download"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Panel -->
+            <section id="panel-users" class="tab-panel">
+                <div class="content-card">
+                    <h3 class="card-title"><i class="fa-solid fa-users"></i> User Management</h3>
+                    <div class="filter-bar">
+                        <input type="text" placeholder="Search users..." id="userSearch">
+                        <select id="userFilter">
+                            <option>All Roles</option>
+                            <option>Mentees</option>
+                            <option>Mentors</option>
+                        </select>
+                    </div>
+                    <div class="list-container" id="usersList"></div>
+                </div>
+            </section>
+
+            <!-- Safeguarding Panel -->
+            <section id="panel-safeguarding" class="tab-panel">
+                <div class="content-card safeguarding-card">
+                    <h3 class="card-title"><i class="fa-solid fa-shield"></i> Safeguarding Report</h3>
+                    <p class="card-text">Submit concerns - immediate DSL notification triggered.</p>
+                    <textarea id="safeguardingText" placeholder="Describe the concern in detail..."></textarea>
+                    <button class="btn btn-danger" onclick="submitSafeguardingReport()">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Report
+                    </button>
+                </div>
+                <div class="content-card" id="dslLogsCard" style="display: none;">
+                    <h3 class="card-title alert"><i class="fa-solid fa-file-alt"></i> Audit Logs</h3>
+                    <div class="list-container" id="dslAuditLogs"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal" onclick="if(event.target===this) closeProfileModal()">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-gear"></i> Profile Settings</h3>
+                <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <form id="profileForm">
+                <div class="avatar-editor">
+                    <div class="avatar-preview" id="avatarPreview">?</div>
+                    <label class="avatar-upload">
+                        <i class="fa-solid fa-camera"></i> Change Photo
+                        <input type="file" accept="image/*" onchange="previewAvatar(event)">
+                    </label>
+                </div>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Full Name</label>
+                        <input type="text" id="profileName" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Email Address</label>
+                        <input type="email" id="profileEmail" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Phone Number</label>
+                        <input type="tel" id="profilePhone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    <div class="form-field">
+                        <label>Industry</label>
+                        <select id="profileIndustry">
+                            <option>Technology</option>
+                            <option>Marketing</option>
+                            <option>Finance</option>
+                            <option>Healthcare</option>
+                            <option>Operations</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <label>Notification Preferences</label>
+                    <div class="checkbox-list">
+                        <label><input type="checkbox" id="notifyInApp"> In-app</label>
+                        <label><input type="checkbox" id="notifyEmail"> Email</label>
+                        <label><input type="checkbox" id="notifySms"> SMS</label>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

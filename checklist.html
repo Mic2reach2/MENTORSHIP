@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Mentor - Session Checklist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="brand">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Business Mentor</span>
+                </div>
+                <h1>Post-Session Checklist</h1>
+                <p class="auth-subtext">Complete mandatory verification before closing session</p>
+            </div>
+
+            <form id="checklistForm" class="auth-form">
+                <div class="form-group">
+                    <label>1. Attendance Updated</label>
+                    <p class="card-text" style="margin-bottom: 8px;">Did you update attendance for all participants?</p>
+                    <div style="display: flex; gap: 20px;">
+                        <label><input type="radio" name="q1" value="yes" required> Yes</label>
+                        <label><input type="radio" name="q1" value="no"> No</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Safeguarding Followed</label>
+                    <p class="card-text" style="margin-bottom: 8px;">Did the session follow all safeguarding protocols?</p>
+                    <div style="display: flex; gap: 20px;">
+                        <label><input type="radio" name="q2" value="yes" required> Yes</label>
+                        <label><input type="radio" name="q2" value="no"> No</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. External Contact Shared</label>
+                    <p class="card-text" style="margin-bottom: 8px;">Were any external contact details shared?</p>
+                    <div style="display: flex; gap: 20px;">
+                        <label><input type="radio" name="q3" value="yes" required> Yes</label>
+                        <label><input type="radio" name="q3" value="no"> No</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>4. Session Goals Achieved</label>
+                    <p class="card-text" style="margin-bottom: 8px;">Were the session objectives met?</p>
+                    <div style="display: flex; gap: 20px;">
+                        <label><input type="radio" name="q4" value="yes" required> Yes</label>
+                        <label><input type="radio" name="q4" value="partially"> Partially</label>
+                        <label><input type="radio" name="q4" value="no"> No</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>5. Follow-up Required</label>
+                    <p class="card-text" style="margin-bottom: 8px;">Does mentee need follow-up action?</p>
+                    <div style="display: flex; gap: 20px;">
+                        <label><input type="radio" name="q5" value="yes" required> Yes</label>
+                        <label><input type="radio" name="q5" value="no"> No</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa-solid fa-check-circle"></i>
+                    Submit Checklist
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <a href="index.html" class="btn btn-login">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('checklistForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const checklist = {
+                id: Date.now(),
+                q1: document.querySelector('input[name="q1"]:checked').value,
+                q2: document.querySelector('input[name="q2"]:checked').value,
+                q3: document.querySelector('input[name="q3"]:checked').value,
+                q4: document.querySelector('input[name="q4"]:checked').value,
+                q5: document.querySelector('input[name="q5"]:checked').value,
+                timestamp: new Date().toISOString(),
+                session: 'Weekly Leadership Workshop'
+            };
+
+            const items = JSON.parse(localStorage.getItem('sessionChecklists') || '[]');
+            items.unshift(checklist);
+            localStorage.setItem('sessionChecklists', JSON.stringify(items));
+
+            alert('Checklist submitted and archived. Session marked complete.');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Mentor - Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="brand">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Business Mentor</span>
+                </div>
+                <h1>Create Account</h1>
+                <p class="auth-subtext">Join the professional mentorship program</p>
+            </div>
+
+            <form id="registrationForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regRole">I am registering as</label>
+                    <select id="regRole" required>
+                        <option value="mentee">Mentee (Seeking Mentorship)</option>
+                        <option value="mentor">Mentor (Providing Mentorship)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" required placeholder="Alex Johnson">
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="alex.johnson@company.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="regIndustry">Industry</label>
+                    <select id="regIndustry" required>
+                        <option value="technology">Technology</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="finance">Finance</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="operations">Operations</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="regLevel">Experience Level</label>
+                    <select id="regLevel" required>
+                        <option value="entry">Entry Level (0-2 years)</option>
+                        <option value="mid">Mid Level (2-5 years)</option>
+                        <option value="senior">Senior Level (5+ years)</option>
+                    </select>
+                </div>
+
+<div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" required placeholder="Create a password (min 8 chars)">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="regTerms" required> I agree to the Terms and Conditions
+                        </label>
+                    </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Submit Application
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p class="card-text" style="margin-bottom: 12px; font-size: 13px;">
+                    Mentor applications require dual approval (Admin + Supervisor). Mentees will be assigned automatically.
+                </p>
+                <a href="index.html" class="btn btn-login">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+<script>
+        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('regPassword').value;
+            if (password && password.length < 8) {
+                return alert('Password must be at least 8 characters.');
+            }
+            
+            const registration = {
+                id: Date.now(),
+                role: document.getElementById('regRole').value,
+                name: document.getElementById('regName').value.trim(),
+                email: document.getElementById('regEmail').value.trim(),
+                industry: document.getElementById('regIndustry').value,
+                level: document.getElementById('regLevel').value,
+                status: 'pending',
+                password: password
+            };
+
+            const registrations = JSON.parse(localStorage.getItem('mm_registrations') || '[]');
+            registrations.push(registration);
+            localStorage.setItem('mm_registrations', JSON.stringify(registrations));
+
+            alert('Application submitted! You will receive email notification upon approval.');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
