@@ -11,14 +11,14 @@
     <div class="app-shell">
         <!-- Header -->
         <header class="app-header">
+            <button class="btn btn-login" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <div class="header-brand">
                 <i class="fa-solid fa-briefcase"></i>
                 <h1>Business Mentor</h1>
             </div>
             <div class="header-controls">
-                <button class="btn btn-login" id="mobileMenuBtn" onclick="toggleMobileMenu()">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
                 <div class="user-chip" onclick="toggleUserMenu()">
                     <span class="user-avatar" id="headerAvatar">?</span>
                     <span id="headerName">Guest</span>
@@ -133,12 +133,12 @@
                         <h3 class="card-title" style="margin: 0;"><i class="fa-solid fa-comments"></i> Secure Messages</h3>
                         <button class="btn btn-primary btn-sm" onclick="openGroupChat()"><i class="fa-solid fa-users"></i> New Group Chat</button>
                     </div>
-                    <div class="chat-conversations" style="display: flex; gap: 12px; margin-bottom: 16px;">
-                        <div class="content-card" style="flex: 1; max-width: 200px; padding: 12px; cursor: pointer;" onclick="selectConversation('Sarah Chen')">
+                    <div class="chat-conversations" style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+                        <div class="content-card conv-item" data-conv="Sarah Chen" style="flex: 1; min-width: 150px; max-width: 200px; padding: 12px; cursor: pointer; background: var(--color-gray-50);" onclick="switchConversation('Sarah Chen')">
                             <strong>Sarah Chen</strong>
                             <span class="badge badge-success" style="font-size: 10px;">Mentor</span>
                         </div>
-                        <div class="content-card" style="flex: 1; max-width: 200px; padding: 12px; cursor: pointer;" onclick="selectConversation('Alex Morgan')">
+                        <div class="content-card conv-item" data-conv="Alex Morgan" style="flex: 1; min-width: 150px; max-width: 200px; padding: 12px; cursor: pointer; background: var(--color-gray-50);" onclick="switchConversation('Alex Morgan')">
                             <strong>Alex Morgan</strong>
                             <span class="badge badge-warning" style="font-size: 10px;">Mentee</span>
                         </div>
