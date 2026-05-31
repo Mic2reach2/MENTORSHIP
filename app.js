@@ -345,13 +345,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.switchConversation = function(name) {
+        // Highlight active conversation
         document.querySelectorAll('.conv-item').forEach(item => {
-            item.style.background = item.getAttribute('data-conv') === name 
-                ? 'var(--color-primary)' 
-                : 'var(--color-gray-50)';
-            item.style.color = item.getAttribute('data-conv') === name ? 'white' : 'inherit';
+            if (item.getAttribute('data-conv') === name) {
+                item.style.background = 'var(--color-primary)';
+                item.style.color = 'white';
+            } else {
+                item.style.background = 'var(--color-gray-50)';
+                item.style.color = 'inherit';
+            }
         });
-        alert(`Now chatting with ${name}`);
+        
+        // Store current conversation for message sending
+        window.currentConversation = name;
+        
+        // Show conversation indicator in chat area
+        const chatBox = document.getElementById('chatBox');
+        const emptyState = chatBox.querySelector('.chat-empty');
+        if (emptyState) {
+            emptyState.innerHTML = `<i class="fa-solid fa-comments"></i> Chatting with <strong>${name}</strong> - Type your message below`;
+        }
     };
 
     function renderAnalytics() {
@@ -428,8 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const msg = document.createElement('div');
         msg.className = 'chat-message';
-        msg.textContent = safeText;
         msg.style.cssText = 'background:' + (hasSensitive ? 'var(--color-warning)' : 'var(--color-primary)') + '; color:white; padding:8px 12px; border-radius:6px; margin-bottom:8px;';
+        msg.innerHTML = `<strong>You:</strong> ${safeText}`;
         box.appendChild(msg);
         input.value = '';
         box.scrollTop = box.scrollHeight;
